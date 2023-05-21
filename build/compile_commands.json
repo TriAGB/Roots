@@ -1,0 +1,8 @@
+[
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:/msys64/mingw64/bin/g++.exe   -g -o CMakeFiles/test_001.dir/main.cpp.obj -c W:/PortableGit/REPO1/_ADVANCED_C/test_001/main.cpp",
+  "file": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/main.cpp",
+  "output": "CMakeFiles/test_001.dir/main.cpp.obj"
+}
+]

@@ -1,0 +1,3 @@
+W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/CMakeFiles/test_001.dir
+W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/CMakeFiles/edit_cache.dir
+W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/CMakeFiles/rebuild_cache.dir
