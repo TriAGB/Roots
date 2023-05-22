@@ -1,13 +1,23 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <math.h>
 #include <stdio.h>
 
+using std::endl;
 using std::fabs;
 
 float fn1(float x) { return 3 / x; }
 float fn2(float x) { return 0.6 * x + 3; }
 float fn3(float x) { return ((x - 2) * (x - 2) * (x - 2) - 1); }
+float fn4(float x) { return (x * x * x - 2 * x * x + 3 * x - 1); }
+float_t fn5(float_t x) {
+  return (8 * x * x * x * x + 32 * x * x * x + 40 * x * x + 16 * x + 1);
+}
+
+float df(float x) { return 32 * x * x * x + 96 * x * x + 80 * x + 16; }
+
+float ddf(float x) { return 96 * x * x + 192 * x + 80; }
 
 class FindRoot {
 
@@ -69,6 +79,20 @@ public:
     return xr;
   }
 
+  template <typename F> float Tangent(float xn, F f, F df) {
+    float x1 = xn - f(xn) / df(xn);
+    float x0 = xn;
+    while (fabs(x0 - x1) > eps) {
+      x0 = x1;
+      x1 = x1 - f(x1) / df(x1);
+    }
+    std::cout << "Tangent " << stepcount << " steps" << endl
+              << "Root =" << x1 << std::endl
+              << std::endl;
+
+    return x1;
+  }
+
 private:
   float eps = 0.0;
 };
@@ -81,13 +105,9 @@ int main() {
   printf("\033[100;92m"
          "\033[0;0H"
          "\033[2J");
-  roots.Bisect(fn3, -10, 10);
-  roots.LineSearch(fn3, -10, 10);
-  roots.Chord(fn3, -10, 10);
-  //   printf("\033[0;0m\n");
-  //   roots.findRoot(fn1, -10, 10, 0.0001);
-  //   roots.findRoot(fn2, -10, 10, 0.0001);
-  //   roots.findRoot(fn3, -10, 10, 0.0001);
-
+  roots.Bisect(fn4, -10, 10);
+  roots.LineSearch(fn4, -10, 10);
+  roots.Chord(fn4, -10, 10);
+  roots.Tangent(0, fn5, df);
   return 0;
 }
