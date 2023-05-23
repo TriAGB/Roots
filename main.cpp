@@ -1,15 +1,13 @@
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <math.h>
-#include <stdio.h>
+#include "main.hpp"
 
+using std::cout;
 using std::endl;
 using std::fabs;
+using std::string;
 
 float fn1(float x) { return 3 / x; }
 float fn2(float x) { return 0.6 * x + 3; }
-float fn3(float x) { return ((x - 2) * (x - 2) * (x - 2) - 1); }
+float fn3(float x) { return ((x - 2) * (x - 2) * (x - 2) - 10); }
 float fn4(float x) { return (x * x * x - 2 * x * x + 3 * x - 1); }
 float_t fn5(float_t x) {
   return (8 * x * x * x * x + 32 * x * x * x + 40 * x * x + 16 * x + 1);
@@ -21,93 +19,102 @@ float ddf(float x) { return 96 * x * x + 192 * x + 80; }
 
 class FindRoot {
 
+private:
+  char str[30]; // string
+  float eps = 0.001;
+  static int stepcount; // step count
+
+  typedef struct { // method struct
+    string b = "_Bisect";
+    string l = "_LineSearch";
+    string C = "_Chord";
+    string t = "_Tangent";
+    string c = "_Combine";
+  } Method;
+
 public:
-  int stepcount = 0;
-  void message() {
-    std::cout << "Find root for %d steps" << stepcount << std::endl;
+  Method methods; // method
+
+  FindRoot() { // FindRoot() = default;
+    for (int i = 0; i <= 30; i++)
+      str[i] = '\0';
+  }
+  void operator+(const std::string &method) {
+    if (method.empty())
+      return;
+
+    const char *methodStr = nullptr;
+
+    switch (method[0]) {
+    case 'b':
+      methodStr = methods.b.c_str();
+      break;
+    case 'l':
+      methodStr = methods.l.c_str();
+      break;
+    case 'C':
+      methodStr = methods.c.c_str();
+      break;
+    case 't':
+      methodStr = methods.t.c_str();
+      break;
+    case 'c':
+      methodStr = methods.c.c_str();
+      break;
+    }
+
+    if (methodStr != nullptr)
+      strcat_s(str, methodStr);
   }
 
-  void message(float x) { std::cout << "Root is: " << x << std::endl; }
+  void getStr() { // get string
+    std::cout << str << std::endl << std::endl;
+  }
+
+  void message() {               // message
+    std::string messageStr(str); // convert char* to string
+    std::cout << messageStr << this->stepcount << " steps" << std::endl;
+  }
+
+  void message(float x) {
+    std::cout << "Root is: " << x << std::endl << std::endl;
+  }
 
   void input_EPS() {
     std::cout << "Input EPS: " << std::endl;
     std::cin >> eps;
   }
-
-  template <typename F> float Bisect(F f, float a, float b) { // bisect method
-    const auto x = (a + b) / 2;
-    const auto y = f(x);
-    if (std::abs(y) < eps) {
-      stepcount++;
-      std::cout << "Bisect " << stepcount << " steps" << std::endl
-                << "Root =" << x << std::endl
-                << std::endl;
-      // message(x);
-      return x;
-    }
-    if (f(a) * y < 0) {
-
-      return Bisect(f, a, x);
-    } else {
-      stepcount++;
-      return Bisect(f, x, b);
-    }
-  }
-  template <typename F>
-  float LineSearch(F f, float xl, float xr) { // line search method
-    float x, minx = xl;
-    const auto nextstep = fabs(xr - xl) / (1 / eps); //
-    for (x = xl; x < xr; x += nextstep, stepcount++) {
-      if (fabs(f(x)) < fabs(f(minx)))
-        minx = x;
-    }
-    std::cout << "Liner " << stepcount << " steps" << std::endl
-              << "Root =" << minx << std::endl
-              << std::endl;
-    return minx;
-  }
-
-  template <typename F> float Chord(F f, float xl, float xr) {
-    while (fabs(xr - xl) > eps) {
-      xl = xr - (xr - xl) * f(xr) / (f(xr) - f(xl));
-      xr = xl - (xl - xr) * f(xl) / (f(xl) - f(xr));
-      stepcount++;
-    }
-    std::cout << "Chord " << stepcount << " steps" << std::endl
-              << "Root =" << xr << std::endl
-              << std::endl;
-    return xr;
-  }
-
-  template <typename F> float Tangent(float xn, F f, F df) {
-    float x1 = xn - f(xn) / df(xn);
-    float x0 = xn;
-    while (fabs(x0 - x1) > eps) {
-      x0 = x1;
-      x1 = x1 - f(x1) / df(x1);
-    }
-    std::cout << "Tangent " << stepcount << " steps" << endl
-              << "Root =" << x1 << std::endl
-              << std::endl;
-
-    return x1;
-  }
-
-private:
-  float eps = 0.0;
 };
+
+int FindRoot::stepcount = 0;
 
 int main() {
 
   FindRoot roots;
-  roots.input_EPS();
-  roots.message();
+  // roots.input_EPS();
+
   printf("\033[100;92m"
          "\033[0;0H"
          "\033[2J");
-  roots.Bisect(fn4, -10, 10);
-  roots.LineSearch(fn4, -10, 10);
-  roots.Chord(fn4, -10, 10);
-  roots.Tangent(0, fn5, df);
-  return 0;
+
+  const Bisect bisect(0.0000001);
+  const auto result_bisect = bisect.find_root(fn3, -10, 10);
+  std::cout << "BISECT: " << result_bisect.result << " after "
+            << result_bisect.stepcount << " iterations" << std::endl;
+  const LineSearch linesearch(0.0000001);
+  const auto result_linesearch = linesearch.find_root(fn3, -10, 10);
+  std::cout << "LINESEARCH: " << result_linesearch.result << " after "
+            << result_linesearch.stepcount << " iterations" << std::endl;
+  const Chord chord(0.00001);
+  const auto result_chord = chord.find_root(fn3, -10, 10);
+  std::cout << "CHORD: " << result_chord.result << " after "
+            << result_chord.stepcount << " iterations" << std::endl;
+  const Tangent tangent(0.0000001);
+  const auto result_tangent = tangent.find_root(fn3, df, 10);
+  std::cout << "TANGENT: " << result_tangent.result << " after "
+            << result_tangent.stepcount << " iterations" << std::endl;
+  const Combine combine(0.0000001);
+  const auto result_combine = combine.find_root(fn3, df, ddf, -10, 10);
+  std::cout << "COMBINE: " << result_combine.result << " after "
+            << result_combine.stepcount << " iterations" << std::endl;
 }
