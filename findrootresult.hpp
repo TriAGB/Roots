@@ -16,4 +16,8 @@ struct FindRootResult {
   float result{0};
   size_t stepcount{0};
 };
+
+struct FineIntegralResult {
+  float result{0};
+};
 #endif // FINDROOTRESULT_HPP

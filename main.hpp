@@ -15,4 +15,6 @@
 #include "combine.hpp"
 #include "tangent.hpp"
 
+#include "integ.hpp"
+
 #endif // MAIN_HPP
