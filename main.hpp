@@ -5,9 +5,10 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
 #include <memory>
+#include <string>
+
 
 #include "LineSearch.hpp"
 #include "bisect.hpp"

@@ -18,6 +18,6 @@ struct FindRootResult {
 };
 
 struct FineIntegralResult {
-  float result{0};
+  float result_integral{0};
 };
 #endif // FINDROOTRESULT_HPP
