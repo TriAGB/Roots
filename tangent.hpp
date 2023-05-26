@@ -1,5 +1,14 @@
-#ifndef TANGENT_HPP
-#define TANGENT_HPP
+//********************************
+//        Roots Tangent method
+//********************************
+// author = "Andrei Poletimov"
+// version = "1.0.0"
+// license = "MIT"
+// email = "pae1@gmx.at"
+// status = "Education"
+// date = "2018-03-18"
+//********************************
+#pragma once
 #include "findrootresult.hpp"
 #include <cmath>
 
@@ -17,7 +26,7 @@ private:
                                     size_t stepcount) const {
     float x1 = xn - f(xn) / df(xn);
     float x0 = xn;
-    while (fabs(x0 - x1) > eps) {
+    while (std ::fabs(x0 - x1) > eps) {
       x0 = x1;
       x1 = x1 - f(x1) / df(x1);
       stepcount++;
@@ -26,4 +35,3 @@ private:
   };
   const float eps;
 };
-#endif // TANGENT_HPP

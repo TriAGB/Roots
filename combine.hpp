@@ -9,8 +9,7 @@
 // date = "2018-03-18"
 //********************************
 
-#ifndef COMBINE_HPP
-#define COMBINE_HPP
+#pragma once
 
 #include "findrootresult.hpp"
 #include <cmath>
@@ -43,4 +42,3 @@ private:
   };
   const float eps;
 };
-#endif // COMBINE_HPP

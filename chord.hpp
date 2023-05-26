@@ -8,9 +8,7 @@
 // status = "Education"
 // date = "2018-03-18"
 //********************************
-
-#ifndef CHORD_HPP
-#define CHORD_HPP
+#pragma once
 
 #include "findrootresult.hpp"
 #include <cmath>
@@ -37,4 +35,3 @@ private:
   };
   const float eps;
 };
-#endif // CHORD_HPP

@@ -9,8 +9,7 @@
 // date = "2018-03-18"
 //********************************
 
-#ifndef FINDROOTRESULT_HPP
-#define FINDROOTRESULT_HPP
+#pragma once
 
 struct FindRootResult {
   float result{0};
@@ -20,4 +19,3 @@ struct FindRootResult {
 struct FineIntegralResult {
   float result_integral{0};
 };
-#endif // FINDROOTRESULT_HPP

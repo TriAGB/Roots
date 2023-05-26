@@ -9,8 +9,7 @@
 // date = "2018-03-18"
 //********************************
 
-#ifndef LINESEARCH_HPP
-#define LINESEARCH_HPP
+#pragma once
 
 #include "findrootresult.hpp"
 #include <cmath>
@@ -39,4 +38,3 @@ private:
   }
   const float eps;
 };
-#endif // LINESEARCH_HPP

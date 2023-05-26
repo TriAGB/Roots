@@ -1,5 +1,4 @@
-#ifndef MAIN_HPP
-#define MAIN_HPP
+#pragma once
 
 #include <algorithm>
 #include <cmath>
@@ -9,13 +8,13 @@
 #include <memory>
 #include <string>
 
-
 #include "LineSearch.hpp"
 #include "bisect.hpp"
 #include "chord.hpp"
 #include "combine.hpp"
 #include "tangent.hpp"
 
+#include "function_choice.hpp"
 #include "integ.hpp"
 
-#endif // MAIN_HPP
+#include "readfromfile.hpp"
