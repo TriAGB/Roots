@@ -18,14 +18,14 @@ class Combine {
 public:
   Combine(float eps) : eps(eps) {}
 
-  template <typename F>
-  FindRootResult find_root(F f, F df, F ddf, float xl, float xr) const {
+  template <typename F, typename DF, typename DDF>
+  FindRootResult find_root(F f, DF df, DDF ddf, float xl, float xr) const {
     return find_root_internal(f, df, ddf, xl, xr, 0);
   }
 
 private:
-  template <typename F>
-  FindRootResult find_root_internal(F f, F df, F ddf, float xl, float xr,
+  template <typename F, typename DF, typename DDF>
+  FindRootResult find_root_internal(F f, DF df, DDF ddf, float xl, float xr,
                                     size_t stepcount) const {
     while (fabs(xl - xr) > 2 * eps) {
       if (f(xl) * ddf(xl) < 0)

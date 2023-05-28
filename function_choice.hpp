@@ -38,6 +38,7 @@ public:
   }
 
   std::function<float(float)> getFunction(const std::string &key) {
+    std::cout << "Return function by key='" << key << "'" << std::endl;
     auto it = functions_.find(key);
     if (it != functions_.end()) {
       return it->second;

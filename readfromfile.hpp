@@ -17,21 +17,17 @@
 
 class NumberReader {
 public:
+  NumberReader(const NumberReader &) = default;
+  NumberReader(NumberReader &&) = default;
+  NumberReader &operator=(const NumberReader &) = delete;
+  NumberReader &operator=(NumberReader &&) = delete;
   NumberReader(std::istream &stream) : stream(stream) {}
 
   bool readNumbers(std::vector<int> &numbers) {
-    // std::ifstream inputFile(filename);
-    // if (!stream) {
-    //   std::cerr << "Failed to open the file." << std::endl;
-    //   return false;
-    // }
-
     int num;
     while (stream >> num) {
       numbers.push_back(num);
     }
-
-    // inputFile.close();
     return true;
   }
 
@@ -39,22 +35,26 @@ private:
   std::istream &stream;
 };
 
-// void foo() {
-//   const std::string input_file = get_from_cli_args();
-//   std::vector<int> numbers;
+inline void input_interval() {
+  const std::string input_file =
+      "input_interval.txt"; // Specify the file name here
+  std::vector<int> numbers;
 
-//   if (input_file.empty()) {
-//     std::cout << "Enter numbers: ";
-//     auto reader = NumberReader(std::cin);
-//     reader.readNumbers(numbers);
-//   } else {
-//     auto stream = std::fstream("a.txt");
-//     if (!stream) {
-//       // error
-//     }
+  auto stream = std::fstream(input_file);
+  if (!stream || stream.peek() == std::ifstream::traits_type::eof()) {
+    // If the file fails to open or is empty, fall back to standard input
+    std::cout << "Enter numbers: ";
+    auto reader = NumberReader(std::cin);
+    reader.readNumbers(numbers);
+  } else {
+    auto reader = NumberReader(stream);
+    reader.readNumbers(numbers);
+  }
 
-//     auto reader = NumberReader(stream);
-//     reader.readNumbers(numbers);
-//   }
-
-// }
+  // Print the read numbers
+  std::cout << "Read numbers: ";
+  for (const auto &number : numbers) {
+    std::cout << number << " ";
+  }
+  std::cout << std::endl;
+}

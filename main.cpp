@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include <iterator>
 #include <string>
 
 using std::cout;
@@ -131,88 +132,97 @@ std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
 int FindRoot::stepcount = 0;
 
 int main() {
+
+  input_interval();
+
+  float xl = -6;
+  float xr = 0;
+
   FunctionSelector functionSelector;
   std::function<float(float)> selectedFunction = functionSelector.run();
 
+  const size_t iter_limit = 10000;
   FindRoot roots;
   _Integral integral;
   roots.input_EPS();
 
   // Color print
-  printf("\033[100;92m"
-         "\033[0;0H"
-         "\033[2J");
+  // printf("\033[100;92m"
+  //        "\033[0;0H"
+  //        "\033[2J");
 
   /*************Root calculation*************/
 
   std::cout << "*****Searching ROOTS******" << std::endl;
 
   // The function bisection method
-  const Bisect bisect(roots.eps);
-  const auto result_bisect = bisect.find_root(selectedFunction, -1, 0);
-  std::cout << roots << roots.methods.bisect << result_bisect.result
-            << " after " << result_bisect.stepcount << " iterations"
+  const Bisect bisect(roots.eps, iter_limit);
+  const auto result_bisect = bisect.find_root(selectedFunction, xl, xr);
+  if (result_bisect.has_value()) {
+    std::cout << roots << roots.methods.bisect << result_bisect->result
+              << " after " << result_bisect->stepcount << " iterations"
+              << std::endl;
+  } else {
+    std::cout << roots << roots.methods.bisect << " can't find roots after "
+              << iter_limit << " iterations" << std::endl;
+  }
+
+  // The function line search method
+  const LineSearch linesearch(roots.eps);
+  const auto result_linesearch = linesearch.find_root(selectedFunction, xl, xr);
+  std::cout << roots << roots.methods.linesearch << result_linesearch.result
+            << " after " << result_linesearch.stepcount << " iterations"
             << std::endl;
 
-  // // The function line search method
-  // const LineSearch linesearch(roots.eps);
-  // const auto result_linesearch = linesearch.find_root(&functionSelector, -1,
-  // 0); std::cout << roots << roots.methods.linesearch <<
-  // result_linesearch.result
-  //           << " after " << result_linesearch.stepcount << " iterations"
-  //           << std::endl;
+  // The function chord method
+  const Chord chord(roots.eps);
+  const auto result_chord = chord.find_root(selectedFunction, xl, xr);
+  std::cout << roots << roots.methods.chord << result_chord.result << " after "
+            << result_chord.stepcount << " iterations" << std::endl;
 
-  // // The function chord method
-  // const Chord chord(roots.eps);
-  // const auto result_chord = chord.find_root(&functionSelector, -1, 0);
-  // std::cout << roots << roots.methods.chord << result_chord.result << " after
-  // "
-  //           << result_chord.stepcount << " iterations" << std::endl;
+  // The function tangent method
+  const Tangent tangent(roots.eps);
+  const auto result_tangent = tangent.find_root(selectedFunction, df, xl);
+  std::cout << roots << roots.methods.tangent << result_tangent.result
+            << " after " << result_tangent.stepcount << " iterations"
+            << std::endl;
 
-  // // The function tangent method
-  // const Tangent tangent(roots.eps);
-  // const auto result_tangent = tangent.find_root(&functionSelector, df, -1);
-  // std::cout << roots << roots.methods.tangent << result_tangent.result
-  //           << " after " << result_tangent.stepcount << " iterations"
-  //           << std::endl;
-
-  // // The function Newton method
-  // const Combine combine(roots.eps);
-  // const auto result_combine =
-  //     combine.find_root(&functionSelector, df, ddf, -1, 0);
-  // std::cout << roots << roots.methods.combine << result_combine.result
-  //           << " after " << result_combine.stepcount << " iterations"
-  //           << std::endl
-  //           << std::endl;
+  // The function Newton method
+  const Combine combine(roots.eps);
+  const auto result_combine =
+      combine.find_root(selectedFunction, df, ddf, xl, xr);
+  std::cout << roots << roots.methods.combine << result_combine.result
+            << " after " << result_combine.stepcount << " iterations"
+            << std::endl
+            << std::endl;
 
   /************ Integral calculation*************/
 
-  // std::cout << "*****Searching INTEGRAL******" << std::endl;
-  // // The code function calcRectangles
-  // const auto result_calcRectangles =
-  //     integral.calcRectangles(fn1, roots.xl, roots.xr, roots.n);
-  // std::cout << roots << roots.methods.rectangles
-  //           << result_calcRectangles.result_integral << " [" << roots.xl <<
-  //           ":"
-  //           << roots.xr << "]" << std::endl;
+  std::cout << "*****Searching INTEGRAL******" << std::endl;
+  // The code function calcRectangles
+  const auto result_calcRectangles =
+      integral.calcRectangles(selectedFunction, roots.xl, roots.xr, roots.n);
+  std::cout << roots << roots.methods.rectangles
+            << result_calcRectangles.result_integral << " [" << roots.xl << ":"
+            << roots.xr << "]" << std::endl;
 
-  // // The code function calcIntegralTrap
-  // const auto result_calcIntegralTrap =
-  //     roots.calcIntegralTrap(fn1, roots.xl, roots.xr, roots.n);
-  // std::cout << roots << roots.methods.integralTrap << result_calcIntegralTrap
-  //           << " [" << roots.xl << ":" << roots.xr << "]" << std::endl;
+  // The code function calcIntegralTrap
+  const auto result_calcIntegralTrap =
+      roots.calcIntegralTrap(selectedFunction, roots.xl, roots.xr, roots.n);
+  std::cout << roots << roots.methods.integralTrap << result_calcIntegralTrap
+            << " [" << roots.xl << ":" << roots.xr << "]" << std::endl;
 
-  // // The code function calcIntegralSimpson
-  // const auto result_calcIntegralSimpsonp =
-  //     roots.calcIntegralSimpson(fn1, roots.xl, roots.xr, roots.n);
-  // std::cout << roots << roots.methods.integralSimpson
-  //           << result_calcIntegralSimpsonp << " [" << roots.xl << ":"
-  //           << roots.xr << "]" << std::endl;
+  // The code function calcIntegralSimpson
+  const auto result_calcIntegralSimpsonp =
+      roots.calcIntegralSimpson(selectedFunction, roots.xl, roots.xr, roots.n);
+  std::cout << roots << roots.methods.integralSimpson
+            << result_calcIntegralSimpsonp << " [" << roots.xl << ":"
+            << roots.xr << "]" << std::endl;
 
-  // // The code function calcIntegralMonteCarlo
-  // const auto result_calcIntegralMonteCarlo =
-  //     roots.calcIntegralMonteCarlo(fn1, roots.xl, roots.xr, 0, roots.n);
-  // std::cout << roots << roots.methods.integralMonteCarlo
-  //           << result_calcIntegralMonteCarlo << " [" << roots.xl << ":"
-  //           << roots.xr << "]" << std::endl;
+  // The code function calcIntegralMonteCarlo
+  const auto result_calcIntegralMonteCarlo = roots.calcIntegralMonteCarlo(
+      selectedFunction, roots.xl, roots.xr, 0, roots.n);
+  std::cout << roots << roots.methods.integralMonteCarlo
+            << result_calcIntegralMonteCarlo << " [" << roots.xl << ":"
+            << roots.xr << "]" << std::endl;
 }
