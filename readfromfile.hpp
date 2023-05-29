@@ -13,22 +13,21 @@
 #include <fstream>
 #include <iostream>
 #include <istream>
+#include <ostream>
 #include <vector>
 
 class NumberReader {
 public:
-  NumberReader(const NumberReader &) = default;
-  NumberReader(NumberReader &&) = default;
-  NumberReader &operator=(const NumberReader &) = delete;
-  NumberReader &operator=(NumberReader &&) = delete;
   NumberReader(std::istream &stream) : stream(stream) {}
 
-  bool readNumbers(std::vector<int> &numbers) {
-    int num;
+  void readNumbers(std::vector<float> &numbers) {
+    float num;
     while (stream >> num) {
       numbers.push_back(num);
+
+      if (!(stream >> std::ws))
+        break;
     }
-    return true;
   }
 
 private:
@@ -38,21 +37,16 @@ private:
 inline void input_interval() {
   const std::string input_file =
       "input_interval.txt"; // Specify the file name here
-  std::vector<int> numbers;
+  std::vector<float> numbers;
 
   auto stream = std::fstream(input_file);
-  if (!stream || stream.peek() == std::ifstream::traits_type::eof()) {
-    // If the file fails to open or is empty, fall back to standard input
-    std::cout << "Enter numbers: ";
-    auto reader = NumberReader(std::cin);
-    reader.readNumbers(numbers);
-  } else {
-    auto reader = NumberReader(stream);
-    reader.readNumbers(numbers);
-  }
+  auto reader = NumberReader(stream);
+  reader.readNumbers(numbers);
 
   // Print the read numbers
-  std::cout << "Read numbers: ";
+  std::cout << std::endl
+            << "***********Read interval from file************" << std::endl
+            << "Read numbers: " << std::endl;
   for (const auto &number : numbers) {
     std::cout << number << " ";
   }

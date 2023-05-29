@@ -20,13 +20,13 @@ public:
   Bisect(float eps, size_t iter_limit) : eps(eps), iter_limit(iter_limit) {}
 
   template <typename F>
-  std::optional<FindRootResult> find_root(F &f, float xl, float xr) const {
+  std::optional<FindRootResult> find_root(F &&f, float xl, float xr) const {
     return find_root_internal(f, xl, xr, 0);
   }
 
 private:
   template <typename F>
-  std::optional<FindRootResult> find_root_internal(F &f, float xl, float xr,
+  std::optional<FindRootResult> find_root_internal(F &&f, float xl, float xr,
                                                    size_t stepcount) const {
     const auto x = (xl + xr) / 2;
     const auto y = f(x);

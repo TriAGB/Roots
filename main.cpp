@@ -1,4 +1,19 @@
-#include "main.hpp"
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <memory>
+#include <string>
+
+#include "LineSearch.hpp"
+#include "bisect.hpp"
+#include "chord.hpp"
+#include "combine.hpp"
+#include "function_choice.hpp"
+#include "integ.hpp"
+#include "readfromfile.hpp"
+#include "tangent.hpp"
 #include <iterator>
 #include <string>
 
@@ -7,23 +22,16 @@ using std::endl;
 using std::fabs;
 using std::string;
 
-float df(float x) { return 32 * x * x * x + 96 * x * x + 80 * x + 16; }
-float ddf(float x) { return 96 * x * x + 192 * x + 80; }
+float xl = -2.0;
+float xr = -1.8;
+const size_t iter_limit = 100000;
 
 class FindRoot {
-
 private:
-  char str[30]; // string
-
   static int stepcount; // step count
-
-  ;
-
 public:
   int n = 10000;      // number of steps
   float eps = 0.0001; // accuracy
-  float xl = -5.854;
-  float xr = -0.244;
 
   struct Method { // method struct
     string bisect = "_BISECT ";
@@ -40,24 +48,6 @@ public:
 
   Method methods; // method
 
-  FindRoot() { // FindRoot() = default;
-    for (int i = 0; i <= 30; i++)
-      str[i] = '\0';
-  }
-
-  void getStr() { // get string
-    std::cout << str << std::endl << std::endl;
-  }
-
-  void message() {               // message
-    std::string messageStr(str); // convert char* to string
-    std::cout << messageStr << this->stepcount << " steps" << std::endl;
-  }
-
-  void message(float x) {
-    std::cout << "Root is: " << x << std::endl << std::endl;
-  }
-
   void input_EPS() {
     std::cout << "Input accuracy calculation ROOT EPS (or press Enter to use "
                  "default esp=0.0001): ";
@@ -68,60 +58,6 @@ public:
     }
     std::cout << "Using EPS value: " << eps << std::endl;
   }
-
-  // // The code defines a template function calcRectangles that
-  // // calculates the approximate integral using the method of
-  // // rectangles(also known as the rectangular or midpoint rule)
-  // template <typename F>
-  // float calcRectangles(F f, float xl, float xr, size_t n) const {
-  //   float sum = 0;
-  //   float h = (xr - xl) / n;
-  //   for (size_t i = 0; i < n; i++) {
-  //     sum += f(xl);
-  //     xl += h;
-  //   }
-  //   return (sum * h);
-  // }
-
-  // The code defines a template function calcIntegralTrap that
-  // calculates the approximate integral using the trapezoidal rule
-  template <typename F>
-  float calcIntegralTrap(F f, float xl, float xr, size_t n) {
-    float sum = 0;
-    float h = (xr - xl) / n;
-    for (float x = xl + h; x < xr - h; x += h) {
-      sum += 0.5 * h * (f(x) + f(x + h));
-    }
-    return sum;
-  }
-
-  // The code defines a template function
-  // calcIntegralSimpson that calculates the approximate integral using
-  // Simpson's rule.
-  template <typename F>
-  float calcIntegralSimpson(F f, float xl, float xr, size_t n) {
-    float sum = 0;
-    float h = (xr - xl) / n;
-    for (float x = xl + h; x < xr - h; x += h) {
-      sum += h / 6.0 * (f(x) + 4.0 * f(0.5 * (x + x + h)) + f(x + h));
-    }
-    return sum;
-  }
-
-  // The code defines a template function calcIntegralMonteCarlo
-  // that estimates the integral using the Monte Carlo method.
-  template <typename F>
-  float calcIntegralMonteCarlo(F f, float xl, float xr, float fmax, size_t n) {
-    size_t in_d = 0;
-    float width = fabs(xr - xl), height = fmax;
-    for (size_t i = 0; i < n; i++) {
-      float x = ((float)rand() / (float)RAND_MAX) * width - fabs(xl);
-      float y = (float)rand() / (float)RAND_MAX * height;
-      if (y < f(x))
-        in_d++;
-    }
-    return fabs((float)in_d / n * width * height);
-  }
 };
 
 std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
@@ -129,31 +65,23 @@ std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
   return os;
 }
 
-int FindRoot::stepcount = 0;
-
 int main() {
-
   input_interval();
-
-  float xl = -6;
-  float xr = 0;
-
-  FunctionSelector functionSelector;
-  std::function<float(float)> selectedFunction = functionSelector.run();
-
-  const size_t iter_limit = 10000;
   FindRoot roots;
   _Integral integral;
   roots.input_EPS();
 
+  FunctionSelector functionSelector;
+  std::function<float(float)> selectedFunction = functionSelector.run();
+
   // Color print
-  // printf("\033[100;92m"
-  //        "\033[0;0H"
-  //        "\033[2J");
+  printf("\033[100;92m"
+         "\033[0;0H"
+         "\033[2J");
 
   /*************Root calculation*************/
 
-  std::cout << "*****Searching ROOTS******" << std::endl;
+  std::cout << "*****Searching ROOTS******" << std::endl << std::endl;
 
   // The function bisection method
   const Bisect bisect(roots.eps, iter_limit);
@@ -168,61 +96,88 @@ int main() {
   }
 
   // The function line search method
-  const LineSearch linesearch(roots.eps);
+  const LineSearch linesearch(roots.eps, iter_limit);
   const auto result_linesearch = linesearch.find_root(selectedFunction, xl, xr);
-  std::cout << roots << roots.methods.linesearch << result_linesearch.result
-            << " after " << result_linesearch.stepcount << " iterations"
-            << std::endl;
+  if (result_linesearch.has_value()) {
+    std::cout << roots << roots.methods.linesearch << result_linesearch->result
+              << " after " << result_linesearch->stepcount << " iterations"
+              << std::endl;
+  } else {
+    std::cout << roots << roots.methods.bisect << " can't find roots after "
+              << iter_limit << " iterations" << std::endl;
+  }
 
   // The function chord method
-  const Chord chord(roots.eps);
+  const Chord chord(roots.eps, iter_limit);
   const auto result_chord = chord.find_root(selectedFunction, xl, xr);
-  std::cout << roots << roots.methods.chord << result_chord.result << " after "
-            << result_chord.stepcount << " iterations" << std::endl;
+  if (result_chord.has_value()) {
+    std::cout << roots << roots.methods.chord << result_chord->result
+              << " after " << result_chord->stepcount << " iterations"
+              << std::endl;
+  } else {
+    std::cout << roots << roots.methods.chord << " can't find roots after "
+              << iter_limit << " iterations" << std::endl;
+  }
 
   // The function tangent method
-  const Tangent tangent(roots.eps);
+  const Tangent tangent(roots.eps, iter_limit);
   const auto result_tangent = tangent.find_root(selectedFunction, df, xl);
-  std::cout << roots << roots.methods.tangent << result_tangent.result
-            << " after " << result_tangent.stepcount << " iterations"
-            << std::endl;
 
-  // The function Newton method
-  const Combine combine(roots.eps);
+  if (result_tangent.has_value()) {
+    std::cout << roots << roots.methods.tangent << result_tangent->result
+              << " after " << result_tangent->stepcount << " iterations"
+              << std::endl;
+  } else {
+    std::cout << roots << roots.methods.tangent << " can't find roots after "
+              << iter_limit << " iterations" << std::endl;
+  }
+
+  // The function tangent method
+  const Combine combine(roots.eps, iter_limit);
   const auto result_combine =
       combine.find_root(selectedFunction, df, ddf, xl, xr);
-  std::cout << roots << roots.methods.combine << result_combine.result
-            << " after " << result_combine.stepcount << " iterations"
-            << std::endl
-            << std::endl;
+
+  // The function Newton method
+  if (result_combine.has_value()) {
+    std::cout << roots << roots.methods.combine << result_combine->result
+              << " after " << result_combine->stepcount << " iterations"
+              << std::endl;
+  } else {
+    std::cout << roots << roots.methods.combine << " can't find roots after "
+              << iter_limit << " iterations" << std::endl
+              << std::endl;
+    ;
+  }
 
   /************ Integral calculation*************/
 
-  std::cout << "*****Searching INTEGRAL******" << std::endl;
+  std::cout << "*****Searching INTEGRAL******" << std::endl << std::endl;
   // The code function calcRectangles
   const auto result_calcRectangles =
-      integral.calcRectangles(selectedFunction, roots.xl, roots.xr, roots.n);
+      integral.calcRectangles(selectedFunction, xl, xr, roots.n);
   std::cout << roots << roots.methods.rectangles
-            << result_calcRectangles.result_integral << " [" << roots.xl << ":"
-            << roots.xr << "]" << std::endl;
+            << result_calcRectangles.result_integral << " [" << xl << ":" << xr
+            << "]" << std::endl;
 
   // The code function calcIntegralTrap
   const auto result_calcIntegralTrap =
-      roots.calcIntegralTrap(selectedFunction, roots.xl, roots.xr, roots.n);
-  std::cout << roots << roots.methods.integralTrap << result_calcIntegralTrap
-            << " [" << roots.xl << ":" << roots.xr << "]" << std::endl;
+      integral.calcIntegralTrap(selectedFunction, xl, xr, roots.n);
+  std::cout << roots << roots.methods.integralTrap
+            << result_calcIntegralTrap.result_integral << " [" << xl << ":"
+            << xr << "]" << std::endl;
 
   // The code function calcIntegralSimpson
   const auto result_calcIntegralSimpsonp =
-      roots.calcIntegralSimpson(selectedFunction, roots.xl, roots.xr, roots.n);
+      integral.calcIntegralSimpson(selectedFunction, xl, xr, roots.n);
   std::cout << roots << roots.methods.integralSimpson
-            << result_calcIntegralSimpsonp << " [" << roots.xl << ":"
-            << roots.xr << "]" << std::endl;
+            << result_calcIntegralSimpsonp.result_integral << " [" << xl << ":"
+            << xr << "]" << std::endl;
 
   // The code function calcIntegralMonteCarlo
-  const auto result_calcIntegralMonteCarlo = roots.calcIntegralMonteCarlo(
-      selectedFunction, roots.xl, roots.xr, 0, roots.n);
+  const auto result_calcIntegralMonteCarlo =
+      integral.calcIntegralMonteCarlo(selectedFunction, xl, xr, 0, roots.n);
   std::cout << roots << roots.methods.integralMonteCarlo
-            << result_calcIntegralMonteCarlo << " [" << roots.xl << ":"
-            << roots.xr << "]" << std::endl;
+            << result_calcIntegralMonteCarlo.result_integral << " [" << xl
+            << ":" << xr << "]" << std::endl
+            << std::endl;
 }

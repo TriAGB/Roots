@@ -61,7 +61,7 @@ public:
   template <typename F>
   FineIntegralResult calcIntegralMonteCarlo(F f, float xl, float xr, float fmax,
                                             size_t n) const {
-    auto in_d = 0;
+    size_t in_d = 0;
     float width = fabs(xr - xl), height = fmax;
     for (size_t i = 0; i < n; i++) {
       float x = ((float)rand() / (float)RAND_MAX) * width - fabs(xl);

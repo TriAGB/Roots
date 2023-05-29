@@ -17,6 +17,9 @@
 #include <string>
 #include <vector>
 
+inline float df(float x) { return 32 * x * x * x + 96 * x * x + 80 * x + 16; }
+inline float ddf(float x) { return 96 * x * x + 192 * x + 80; }
+
 class FunctionSelector {
 public:
   FunctionSelector() {
