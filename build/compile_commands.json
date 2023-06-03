@@ -1,8 +1,38 @@
 [
 {
   "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
-  "command": "C:/msys64/mingw64/bin/g++.exe   -g -o CMakeFiles/test_001.dir/main.cpp.obj -c W:/PortableGit/REPO1/_ADVANCED_C/test_001/main.cpp",
-  "file": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/main.cpp",
-  "output": "CMakeFiles/test_001.dir/main.cpp.obj"
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/lib -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu++17 -o CMakeFiles\\app.dir\\main.cpp.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\main.cpp",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\main.cpp",
+  "output": "CMakeFiles\\app.dir\\main.cpp.obj"
+},
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googlemock/include -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googlemock -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest/include -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=c++17 -Wall -Wshadow -Wconversion -DGTEST_HAS_PTHREAD=0 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -o _deps\\googletest-build\\googlemock\\CMakeFiles\\gmock.dir\\src\\gmock-all.cc.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googlemock\\src\\gmock-all.cc",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googlemock\\src\\gmock-all.cc",
+  "output": "_deps\\googletest-build\\googlemock\\CMakeFiles\\gmock.dir\\src\\gmock-all.cc.obj"
+},
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googlemock/include -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googlemock -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest/include -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=c++17 -Wall -Wshadow -Wconversion -DGTEST_HAS_PTHREAD=0 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -o _deps\\googletest-build\\googlemock\\CMakeFiles\\gmock_main.dir\\src\\gmock_main.cc.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googlemock\\src\\gmock_main.cc",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googlemock\\src\\gmock_main.cc",
+  "output": "_deps\\googletest-build\\googlemock\\CMakeFiles\\gmock_main.dir\\src\\gmock_main.cc.obj"
+},
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest/include -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=c++17 -Wall -Wshadow -Wconversion -DGTEST_HAS_PTHREAD=0 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -o _deps\\googletest-build\\googletest\\CMakeFiles\\gtest.dir\\src\\gtest-all.cc.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googletest\\src\\gtest-all.cc",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googletest\\src\\gtest-all.cc",
+  "output": "_deps\\googletest-build\\googletest\\CMakeFiles\\gtest.dir\\src\\gtest-all.cc.obj"
+},
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest/include -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=c++17 -Wall -Wshadow -Wconversion -DGTEST_HAS_PTHREAD=0 -fexceptions -W -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wunused-parameter -Wcast-align -Wchar-subscripts -Winline -Wredundant-decls -o _deps\\googletest-build\\googletest\\CMakeFiles\\gtest_main.dir\\src\\gtest_main.cc.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googletest\\src\\gtest_main.cc",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\build\\_deps\\googletest-src\\googletest\\src\\gtest_main.cc",
+  "output": "_deps\\googletest-build\\googletest\\CMakeFiles\\gtest_main.dir\\src\\gtest_main.cc.obj"
+},
+{
+  "directory": "W:/PortableGit/REPO1/_ADVANCED_C/test_001/build",
+  "command": "C:\\Users\\pae\\scoop\\apps\\llvm\\current\\bin\\clang++.exe -IW:/PortableGit/REPO1/_ADVANCED_C/test_001/lib -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest/include -isystem W:/PortableGit/REPO1/_ADVANCED_C/test_001/build/_deps/googletest-src/googletest -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu++17 -o test\\CMakeFiles\\lib_test.dir\\test.cpp.obj -c W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\test\\test.cpp",
+  "file": "W:\\PortableGit\\REPO1\\_ADVANCED_C\\test_001\\test\\test.cpp",
+  "output": "test\\CMakeFiles\\lib_test.dir\\test.cpp.obj"
 }
 ]
