@@ -34,7 +34,7 @@ private:
   std::istream &stream;
 };
 
-inline void input_interval() {
+inline void input_interval(float &xl, float &xr) {
   const std::string input_file =
       "input_interval.txt"; // Specify the file name here
   std::vector<float> numbers;
@@ -51,4 +51,11 @@ inline void input_interval() {
     std::cout << number << " ";
   }
   std::cout << std::endl;
+
+  if (numbers.size() != 2) {
+    std::cout << "Error: input file must contain 2 numbers" << std::endl;
+    exit(1);
+  }
+  xl = numbers[0];
+  xr = numbers[1];
 }

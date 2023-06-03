@@ -22,8 +22,6 @@ using std::endl;
 using std::fabs;
 using std::string;
 
-float xl = 0;
-float xr = 5;
 const size_t iter_limit = 100000;
 
 // Class to store root finding parameters and methods
@@ -63,13 +61,13 @@ public:
   }
 
   // Function to input the interval for root calculations
-  void input_interval() {
-    cout << "Enter the interval for root calculations:" << endl;
-    cout << "Lower bound (xl): ";
-    cin >> xl;
-    cout << "Upper bound (xr): ";
-    cin >> xr;
-  }
+  // void input_interval() {
+  //   cout << "Enter the interval for root calculations:" << endl;
+  //   cout << "Lower bound (xl): ";
+  //   cin >> xl;
+  //   cout << "Upper bound (xr): ";
+  //   cin >> xr;
+  // }
 };
 
 // Overloading the stream insertion operator for FindRoot class
@@ -79,7 +77,9 @@ std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
 }
 
 int main() {
-  input_interval();
+  float xl = 0;
+  float xr = 0;
+  input_interval(xl, xr);
   FindRoot roots;
   _Integral integral;
   roots.input_EPS();
