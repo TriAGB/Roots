@@ -2,7 +2,7 @@
 
 add_executable(
   lib_test 
-  test.cpp
+  test_command_line_parser.cpp
 )
 target_link_libraries(
   lib_test

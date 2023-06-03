@@ -76,7 +76,7 @@ std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
   return os;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   float xl = 0;
   float xr = 0;
   input_interval(xl, xr);
