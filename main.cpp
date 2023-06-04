@@ -10,6 +10,7 @@
 #include "bisect.hpp"
 #include "chord.hpp"
 #include "combine.hpp"
+#include "command_line_parser.hpp"
 #include "function_choice.hpp"
 #include "integ.hpp"
 #include "readfromfile.hpp"
@@ -77,6 +78,16 @@ std::ostream &operator<<(std::ostream &os, const FindRoot &root) {
 }
 
 int main(int argc, char *argv[]) {
+  const CommandLineParser commandLineParser(argc, argv);
+  if (!commandLineParser.is_valid()) {
+    commandLineParser.print_help();
+    return 1;
+  }
+  if (commandLineParser.is_help()) {
+    commandLineParser.print_help();
+    return 0;
+  }
+
   float xl = 0;
   float xr = 0;
   input_interval(xl, xr);

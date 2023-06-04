@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-CommandLineParser::CommandLineParser(int argc, char *argv[]) {}
+CommandLineParser::CommandLineParser(int argc, char **argv) {}
 
 bool CommandLineParser::is_valid() const { return true; }
 

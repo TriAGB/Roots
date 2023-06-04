@@ -29,7 +29,7 @@ private:
                                                    size_t stepcount) const {
     float x1 = xn - f(xn) / df(xn);
     float x0 = xn;
-    while (std ::fabs(x0 - x1) > eps && stepcount < iter_limit) {
+    while (std::fabs(x0 - x1) > eps && stepcount < iter_limit) {
       x0 = x1;
       x1 = x1 - f(x1) / df(x1);
       stepcount++;
