@@ -106,6 +106,7 @@ int main(int argc, char *argv[]) {
   /*************Root calculation*************/
 
   std::cout << "*****Searching ROOTS******" << std::endl << std::endl;
+  ;
 
   // Bisection method
   const Bisect bisect(roots.eps, iter_limit);
@@ -114,6 +115,7 @@ int main(int argc, char *argv[]) {
     if (commandLineParser.print_roots()) {
       std::cout << roots << roots.methods.bisect << result_bisect->result
                 << " [" << xl << ":" << xr << "]";
+
       if (commandLineParser.print_iteration_count()) {
         std::cout << " after " << result_bisect->stepcount << " iterations";
       }
@@ -129,12 +131,18 @@ int main(int argc, char *argv[]) {
   const LineSearch linesearch(roots.eps, iter_limit);
   const auto result_linesearch = linesearch.find_root(selectedFunction, xl, xr);
   if (result_linesearch.has_value()) {
-    std::cout << roots << roots.methods.linesearch << result_linesearch->result
-              << " [" << xl << ":" << xr << "]"
-              << " after " << result_linesearch->stepcount << " iterations"
-              << std::endl;
+    if (commandLineParser.print_roots()) {
+      std::cout << roots << roots.methods.linesearch
+                << result_linesearch->result << " [" << xl << ":" << xr << "]";
+
+      if (commandLineParser.print_iteration_count()) {
+        std::cout << " after " << result_linesearch->stepcount << " iterations";
+      }
+      std::cout << endl;
+    }
+
   } else {
-    std::cout << roots << roots.methods.bisect << " can't find roots after "
+    std::cout << roots << roots.methods.linesearch << " can't find roots after "
               << iter_limit << " iterations" << std::endl;
   }
 
@@ -142,10 +150,16 @@ int main(int argc, char *argv[]) {
   const Chord chord(roots.eps, iter_limit);
   const auto result_chord = chord.find_root(selectedFunction, xl, xr);
   if (result_chord.has_value()) {
-    std::cout << roots << roots.methods.chord << result_chord->result << " ["
-              << xl << ":" << xr << "]"
-              << " after " << result_chord->stepcount << " iterations"
-              << std::endl;
+    if (commandLineParser.print_roots()) {
+      std::cout << roots << roots.methods.chord << result_chord->result << " ["
+                << xl << ":" << xr << "]";
+
+      if (commandLineParser.print_iteration_count()) {
+        std::cout << " after " << result_chord->stepcount << " iterations";
+      }
+      std::cout << endl;
+    }
+
   } else {
     std::cout << roots << roots.methods.chord << " can't find roots after "
               << iter_limit << " iterations" << std::endl;
@@ -156,10 +170,16 @@ int main(int argc, char *argv[]) {
   const auto result_tangent = tangent.find_root(selectedFunction, df, xl);
 
   if (result_tangent.has_value()) {
-    std::cout << roots << roots.methods.tangent << result_tangent->result
-              << " [" << xl << ":" << xr << "]"
-              << " after " << result_tangent->stepcount << " iterations"
-              << std::endl;
+    if (commandLineParser.print_roots()) {
+      std::cout << roots << roots.methods.tangent << result_tangent->result
+                << " [" << xl << ":" << xr << "]";
+
+      if (commandLineParser.print_iteration_count()) {
+        std::cout << " after " << result_tangent->stepcount << " iterations";
+      }
+      std::cout << endl;
+    }
+
   } else {
     std::cout << roots << roots.methods.tangent << " can't find roots after "
               << iter_limit << " iterations" << std::endl;
@@ -170,19 +190,23 @@ int main(int argc, char *argv[]) {
   const auto result_combine =
       combine.find_root(selectedFunction, df, ddf, xl, xr);
   if (result_combine.has_value()) {
-    std::cout << roots << roots.methods.combine << result_combine->result
-              << " [" << xl << ":" << xr << "]"
-              << " after " << result_combine->stepcount << " iterations"
-              << std::endl;
+    if (commandLineParser.print_roots()) {
+      std::cout << roots << roots.methods.combine << result_combine->result
+                << " [" << xl << ":" << xr << "]";
+
+      if (commandLineParser.print_iteration_count()) {
+        std::cout << " after " << result_combine->stepcount << " iterations";
+      }
+      std::cout << endl;
+    }
+
   } else {
     std::cout << roots << roots.methods.combine << " can't find roots after "
-              << iter_limit << " iterations" << std::endl
-              << std::endl;
-    ;
+              << iter_limit << " iterations\n\r" << std::endl;
   }
 
   /************ Integral calculation*************/
-
+  std::cout << std::endl << std::endl;
   std::cout << "*****Searching INTEGRAL******" << std::endl << std::endl;
 
   // Rectangles method

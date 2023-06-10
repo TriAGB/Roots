@@ -22,6 +22,7 @@ inline float ddf(float x) { return 96 * x * x + 192 * x + 80; }
 
 class FunctionSelector {
 public:
+  std::string selectedFunctionKey;
   FunctionSelector() {
     // Add functions to the selection list here
     functions_["fn1"] = [](float x) { return 3 / x; };
@@ -40,7 +41,7 @@ public:
     };
   }
 
-  std::function<float(float)> getFunction(const std::string &key) {
+  std::function<float(float)> getFnuction(const std::string &key) {
     std::cout << "Return function by key='" << key << "'" << std::endl;
     auto it = functions_.find(key);
     if (it != functions_.end()) {
@@ -66,7 +67,6 @@ public:
   std::function<float(float)> run() {
     displayMenu();
 
-    std::string selectedFunctionKey;
     std::cout << "Select a function (enter the corresponding key fn1-fn7):"
               << std::endl;
     std::cin >> selectedFunctionKey;
