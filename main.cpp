@@ -111,10 +111,15 @@ int main(int argc, char *argv[]) {
   const Bisect bisect(roots.eps, iter_limit);
   const auto result_bisect = bisect.find_root(selectedFunction, xl, xr);
   if (result_bisect.has_value()) {
-    std::cout << roots << roots.methods.bisect << result_bisect->result << " ["
-              << xl << ":" << xr << "]"
-              << " after " << result_bisect->stepcount << " iterations"
-              << std::endl;
+    if (commandLineParser.print_roots()) {
+      std::cout << roots << roots.methods.bisect << result_bisect->result
+                << " [" << xl << ":" << xr << "]";
+      if (commandLineParser.print_iteration_count()) {
+        std::cout << " after " << result_bisect->stepcount << " iterations";
+      }
+      std::cout << endl;
+    }
+
   } else {
     std::cout << roots << roots.methods.bisect << " can't find roots after "
               << iter_limit << " iterations" << std::endl;

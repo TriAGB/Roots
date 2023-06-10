@@ -1,8 +1,11 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 class CommandLineParser {
 public:
-  CommandLineParser(int argc, char *argv[]);
+  explicit CommandLineParser(int argc, char *argv[]);
 
   bool is_valid() const;
 
@@ -11,4 +14,7 @@ public:
 
   bool print_roots() const;
   bool print_iteration_count() const;
+
+private:
+  const std::vector<std::string> args;
 };
